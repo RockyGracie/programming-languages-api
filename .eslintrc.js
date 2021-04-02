@@ -11,5 +11,9 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
+    'consistent-return': 'off',
+    'no-shadow': 'off',
+    'no-console': 'off',
+    indent: 'off',
   },
 };
