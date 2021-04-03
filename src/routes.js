@@ -86,7 +86,7 @@ router.delete('/languages/:id', (request, response) => {
    db.getConnection((err, connection) => {
       if (err) throw err;
 
-      console.log(`Connected as id ${connection.threadId}}`);
+      console.log(`Connected as id ${connection.threadId}`);
 
       connection.query('DELETE FROM languagesinfo WHERE id = ?', [id], (err, rows) => {
          connection.release();
@@ -94,6 +94,35 @@ router.delete('/languages/:id', (request, response) => {
          if (err) return response.status(400).json('Error');
 
          response.sendStatus(204);
+      });
+   });
+});
+
+//
+// UPDATE LANGUAGE
+router.put('/languages/:id', (request, response) => {
+   const {
+ name, created_by, created_in, style_type,
+} = request.body;
+   const { id } = request.params;
+
+   db.getConnection((err, connection) => {
+      if (err) throw err;
+
+      console.log(`Connected as id ${connection.threadId}`);
+
+      connection.query(`
+         UPDATE languagesinfo
+         SET name = ?, created_in = ?, created_by = ?, style_type = ?
+         WHERE id = ?
+      `, [name, created_in, created_by, style_type, id], (err, rows) => {
+         if (err) return console.log(err);
+
+         if (!id) return response.status(404).json({ error: 'Language not found.' });
+
+         if (!name) return response.status(400).json({ error: 'Name is required' });
+
+         response.json(rows);
       });
    });
 });
