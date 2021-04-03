@@ -15,5 +15,6 @@ module.exports = {
     'no-shadow': 'off',
     'no-console': 'off',
     indent: 'off',
+    camelcase: 'off',
   },
 };
