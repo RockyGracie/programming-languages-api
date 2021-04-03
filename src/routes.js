@@ -77,4 +77,25 @@ router.post('/languages', (request, response) => {
       });
    });
 });
+
+//
+// DELETE LANGUAGE
+router.delete('/languages/:id', (request, response) => {
+   const { id } = request.params;
+
+   db.getConnection((err, connection) => {
+      if (err) throw err;
+
+      console.log(`Connected as id ${connection.threadId}}`);
+
+      connection.query('DELETE FROM languagesinfo WHERE id = ?', [id], (err, rows) => {
+         connection.release();
+
+         if (err) return response.status(400).json('Error');
+
+         response.sendStatus(204);
+      });
+   });
+});
+
 module.exports = router;
